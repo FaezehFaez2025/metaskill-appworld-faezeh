@@ -4,7 +4,7 @@ local experiment_playbooks_path = project_home_path + "/experiments/playbooks";
 local pilot_output_path = project_home_path + "/experiments/outputs/ACE_18_task_online_no_GT_pilot/deepseek-v3";
 
 local model_config = {
-    "name": "deepseek-v3",
+    "name": "deepseek-v4-flash-0731",
     "provider": "openai",
     "completion_method": "openai",
     "base_url": "https://az.gptplus5.com/v1",
