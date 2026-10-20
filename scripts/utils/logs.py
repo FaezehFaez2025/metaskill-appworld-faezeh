@@ -1,4 +1,4 @@
-"""Reading the logs of one task: lm_calls.jsonl (Generator, Reflector, Curator) and report.md."""
+"""Reading the LLM calls of one task from lm_calls.jsonl (Generator, Reflector, Curator)."""
 
 from __future__ import annotations
 
