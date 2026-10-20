@@ -87,3 +87,11 @@ def curator_adds(task_dir: Path) -> list[str] | None:
                 if isinstance(op, dict) and op.get("type") == "ADD"
             ]
     return None
+
+
+def reflector_text(task_dir: Path) -> str | None:
+    """The Reflector's error_identification text for this task, or None when it did not run."""
+    for call in read_calls(task_dir):
+        if call_kind(call) == "reflector":
+            return str(parse_json(output_text(call)).get("error_identification") or "")
+    return None
