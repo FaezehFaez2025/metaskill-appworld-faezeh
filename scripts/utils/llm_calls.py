@@ -15,7 +15,10 @@ def read_calls(task_dir: Path) -> Iterator[dict]:
     call_kind(call) returns "generator", "reflector" or "curator" for a call, so you can tell
     which module made it.
     """
-    for line in (task_dir / "logs" / "lm_calls.jsonl").read_text().splitlines():
+    path = task_dir / "logs" / "lm_calls.jsonl"
+    if not path.is_file():
+        return
+    for line in path.read_text().splitlines():
         if line.strip():
             yield json.loads(line)
 
@@ -33,6 +36,17 @@ def call_kind(call: dict) -> str:
     if content.startswith("You are a master curator"):
         return "curator"
     return "other"
+
+
+def calls_of_kind(task_dir: Path, kind: str) -> list[dict]:
+    """The calls of one task made by the "generator", "reflector" or "curator"."""
+    return [call for call in read_calls(task_dir) if call_kind(call) == kind]
+
+
+def prompt_text(call: dict) -> str:
+    """The first message of the prompt of a call, i.e. the instructions given to the LLM."""
+    messages = (call.get("input") or {}).get("messages") or []
+    return (messages[0].get("content") or "") if messages else ""
 
 
 def output_text(call: dict) -> str:
