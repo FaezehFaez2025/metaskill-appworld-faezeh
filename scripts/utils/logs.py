@@ -7,7 +7,6 @@ import re
 from pathlib import Path
 from typing import Iterator
 
-
 def read_calls(task_dir: Path) -> Iterator[dict]:
     """Read the LLM calls of one task, one call at a time.
 
@@ -68,3 +67,23 @@ def parse_json(text: str) -> dict:
             except json.JSONDecodeError:
                 return {}
     return {}
+
+
+def curator_adds(task_dir: Path) -> list[str] | None:
+    """Extract the text of the new bullets that the Curator proposed to add after this task.
+
+    The Curator's answer is a list of operations, and each ADD operation is one new bullet.
+    Return either:
+      - a list with the text of each ADD operation, which is [] when the Curator ran but
+        proposed no ADD, or
+      - None, when this task has no Curator call in its log.
+    """
+    for call in read_calls(task_dir):
+        if call_kind(call) == "curator":
+            operations = parse_json(output_text(call)).get("operations") or []
+            return [
+                op.get("content", "")
+                for op in operations
+                if isinstance(op, dict) and op.get("type") == "ADD"
+            ]
+    return None
