@@ -46,3 +46,25 @@ def output_text(call: dict) -> str:
         # Fallback for logs saved in a different shape.
         content = output.get("content")
     return content or ""
+
+
+def parse_json(text: str) -> dict:
+    """Convert the LLM's answer text into a dict. Return {} if it cannot be read as JSON.
+
+    The answer is meant to be JSON, but the LLM may wrap it in a code fence or add a sentence
+    before or after it. Both are handled.
+    """
+    # Remove spaces and a code fence (```json ... ```) around the JSON.
+    text = text.strip()
+    text = re.sub(r"^```(?:json)?\s*|\s*```$", "", text)
+    try:
+        return json.loads(text)
+    except json.JSONDecodeError:
+        # Retry with only the part from the first { to the last }.
+        start, end = text.find("{"), text.rfind("}")
+        if start >= 0 and end > start:
+            try:
+                return json.loads(text[start : end + 1])
+            except json.JSONDecodeError:
+                return {}
+    return {}
