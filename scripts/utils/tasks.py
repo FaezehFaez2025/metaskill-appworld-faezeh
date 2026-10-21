@@ -21,6 +21,9 @@ class TaskRecord:
     failed_tests: int | None
     total_tests: int | None
     generator_steps: int
+    has_curator_call: bool
+    starting_bullets: dict[str, Bullet]  # bullet id -> bullet, of the starting playbook
+    generator_replies: str  # all Generator replies of the task, joined into one text
 
 
 def task_family_and_instance(task_id: str) -> tuple[str, int]:
@@ -78,5 +81,8 @@ def load_task(task_dir: Path) -> TaskRecord | None:
         failed_tests=failed_tests,
         total_tests=total_tests,
         generator_steps=len(generator_calls),
+        has_curator_call=bool(calls_of_kind(task_dir, "curator")),
+        starting_bullets=parse_bullets(playbook_in_prompt(generator_calls[0])),
+        generator_replies="\n".join(output_text(call) for call in generator_calls),
     )
 
