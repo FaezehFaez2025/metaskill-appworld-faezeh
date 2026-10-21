@@ -7,6 +7,8 @@ import re
 from pathlib import Path
 from typing import Iterator
 
+PLAYBOOK_RE = re.compile(r"### PLAYBOOK BEGIN\n(.*?)\n### PLAYBOOK END", re.S)
+
 def read_calls(task_dir: Path) -> Iterator[dict]:
     """Read the LLM calls of one task, one call at a time.
 
@@ -47,6 +49,16 @@ def prompt_text(call: dict) -> str:
     """The first message of the prompt of a call, i.e. the instructions given to the LLM."""
     messages = (call.get("input") or {}).get("messages") or []
     return (messages[0].get("content") or "") if messages else ""
+
+
+def playbook_in_prompt(call: dict) -> str:
+    """Extract the playbook text from the prompt of a Generator call ("" if it has none).
+
+    Every Generator call has the whole playbook in its prompt, between "### PLAYBOOK BEGIN" and
+    "### PLAYBOOK END".
+    """
+    match = PLAYBOOK_RE.search(prompt_text(call))
+    return match.group(1) if match else ""
 
 
 def output_text(call: dict) -> str:
