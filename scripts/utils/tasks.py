@@ -12,6 +12,17 @@ from utils.playbook import Bullet, parse_bullets
 TASK_ID_RE = re.compile(r'"([0-9a-fA-F]+_\d+)"')
 
 
+@dataclass
+class TaskRecord:
+    task_id: str
+    finished: bool
+    passed: bool | None
+    passed_tests: int | None
+    failed_tests: int | None
+    total_tests: int | None
+    generator_steps: int
+
+
 def task_family_and_instance(task_id: str) -> tuple[str, int]:
     """Split a task id like d0b1f43_2 into the family (d0b1f43) and the instance number (2)."""
     family, _, instance = task_id.rpartition("_")
@@ -58,3 +69,14 @@ def load_task(task_dir: Path) -> TaskRecord | None:
             and total_tests > 0
             and passed_tests == total_tests
         )
+
+    return TaskRecord(
+        task_id=task_dir.name,
+        finished=finished,
+        passed=passed,
+        passed_tests=passed_tests,
+        failed_tests=failed_tests,
+        total_tests=total_tests,
+        generator_steps=len(generator_calls),
+    )
+
