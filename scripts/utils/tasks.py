@@ -24,3 +24,18 @@ def task_order(config_path: Path) -> list[str]:
     if not match:
         raise SystemExit(f"No task_ids list in {config_path}")
     return TASK_ID_RE.findall(match.group(1))
+
+
+def parse_report(path: Path) -> tuple[int | None, int | None, int | None]:
+    """Passed, failed and total evaluation assertions from evaluation/report.md."""
+    text = path.read_text()
+
+    def grab(label: str) -> int | None:
+        match = re.search(rf"{label}\s*:\s*(\d+)", text)
+        return int(match.group(1)) if match else None
+
+    return (
+        grab("Num Passed Tests"),
+        grab("Num Failed Tests"),
+        grab("Num Total  Tests"),
+    )
