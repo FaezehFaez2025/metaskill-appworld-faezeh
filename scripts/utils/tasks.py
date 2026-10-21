@@ -39,3 +39,9 @@ def parse_report(path: Path) -> tuple[int | None, int | None, int | None]:
         grab("Num Failed Tests"),
         grab("Num Total  Tests"),
     )
+
+
+def load_task(task_dir: Path) -> TaskRecord | None:
+    generator_calls = calls_of_kind(task_dir, "generator")
+    if not generator_calls:
+        return None
