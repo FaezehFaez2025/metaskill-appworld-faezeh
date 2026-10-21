@@ -6,7 +6,7 @@ import re
 from dataclasses import dataclass
 from pathlib import Path
 
-from utils.llm_calls import calls_of_kind, output_text, playbook_in_prompt, prompt_text
+from utils.llm_calls import calls_of_kind, output_text, playbook_in_prompt
 from utils.playbook import Bullet, parse_bullets
 
 TASK_ID_RE = re.compile(r'"([0-9a-fA-F]+_\d+)"')
@@ -45,3 +45,16 @@ def load_task(task_dir: Path) -> TaskRecord | None:
     generator_calls = calls_of_kind(task_dir, "generator")
     if not generator_calls:
         return None
+
+    report_path = task_dir / "evaluation" / "report.md"
+    passed_tests = failed_tests = total_tests = None
+    finished = report_path.is_file()
+    passed = None
+    if finished:
+        passed_tests, failed_tests, total_tests = parse_report(report_path)
+        passed = (
+            failed_tests == 0
+            and total_tests is not None
+            and total_tests > 0
+            and passed_tests == total_tests
+        )
