@@ -1,0 +1,17 @@
+{
+  "name": "reme-marketplace",
+  "owner": {
+    "name": "EconML team of Alibaba Tongyi Lab",
+    "url": "https://github.com/agentscope-ai/ReMe"
+  },
+  "metadata": {
+    "description": "ReMe \u2014 file-native long-term memory for AI agents. Claude Code plugin."
+  },
+  "plugins": [
+    {
+      "name": "reme",
+      "source": "./reme",
+      "description": "ReMe automatic recall, completed-turn recording, and MCP memory tools for Claude Code."
+    }
+  ]
+}
