@@ -8,6 +8,15 @@ The scripts in this folder read the logs of an ACE run. For each task, ACE runs 
 
 The playbook after a task is the starting playbook of the next task.
 
+## APIs and arguments
+
+Playbook bullets often mention APIs and arguments by name, such as `search_artists`. `scripts/utils/playbook.py` finds these names in each bullet. They are then searched for in later tasks to check whether a bullet was used.
+
+- An **API** is a function of an AppWorld app that the agent can call, for example `search_artists` of the `spotify` app. The agent calls it in its code as `apis.spotify.search_artists(...)`.
+- An **argument** is an input of an API, for example `min_follower_count` in `apis.spotify.search_artists(query="pop", min_follower_count=1000)`.
+
+The API names and their arguments are listed in `data/api_docs/standard/<app>.json`, one file per app.
+
 ## What is saved for a task
 
 The logs of a task are stored in `<run folder>/tasks/<id>/`, where the id looks like `<family>_<n>`, for example `d0b1f43_1`. This folder contains:
