@@ -61,6 +61,14 @@ reme2 backend=http http.host=127.0.0.1 http.port=8002 \
 
 The paper's embedding model `text-embedding-v4` is not available on our endpoint, so `text-embedding-3-small` is used.
 
+Differences from the paper:
+
+1. **Agent LLM:** `deepseek-v4-flash-0731`, not Qwen3-8B/14B/32B.
+2. **Repetitions:** each task runs 4 times (Avg@4 and Pass@4). The paper repeats that 3 times (12 runs per task) and reports the average.
+3. **Self-reflection:** the default `num_trials = 1` means no retries after a failure. The paper's maximum is 3. It is unclear whether the paper's "fixed" row used retries.
+4. **Tasks:** a 9-task pilot subset, not all 168. These tasks are in the train split, so they overlap with the pool.
+5. **Embedding model:** `text-embedding-3-small` at 1536 dimensions, not `text-embedding-v4` at 1024.
+
 ## 5. Configure the run
 
 Edit `main()` in `benchmark/appworld/run_appworld.py`:
