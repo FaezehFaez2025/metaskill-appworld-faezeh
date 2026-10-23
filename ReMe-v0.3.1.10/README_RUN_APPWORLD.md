@@ -48,8 +48,6 @@ Never commit keys.
 
 ## 4. Start the ReMe service (terminal 1)
 
-Start from the `ReMe-v0.3.1.10` root: the pool path in step 5 is relative to it.
-
 ```bash
 cd ReMe-v0.3.1.10
 conda activate reme-paper
