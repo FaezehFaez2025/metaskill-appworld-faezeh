@@ -5,7 +5,7 @@ Paths are relative to the repo root `metaskill-appworld-faezeh/`.
 
 ## 1. Environments
 
-Two separate conda environments (AppWorld needs an older pydantic than ReMe).
+Two separate conda environments.
 
 ```bash
 cd ReMe-v0.3.1.10
@@ -24,8 +24,6 @@ conda activate appworld-reme
 pip install appworld ray openai jinja2 loguru python-dotenv tqdm pandas requests
 appworld install
 ```
-
-The last two `pip` lines of the service block pin `mcp` and `fastmcp`; newer versions break the service.
 
 ## 2. AppWorld data
 
@@ -92,4 +90,4 @@ Results: `exp_result/<model>/*.jsonl`. A task is solved when `after_score == 1`.
 
 ## Known issue: Ray
 
-`run_appworld.py` uses Ray. In our tests Ray 2.59 did not start together with AppWorld's pydantic pin. Options: try an older Ray (untested), or replace Ray with a plain multiprocessing runner (worked in a 6-task test).
+`run_appworld.py` uses Ray. In our tests Ray 2.59 did not start in the AppWorld environment. Options: try an older Ray (untested), or replace Ray with a plain multiprocessing runner (worked in a 6-task test).
