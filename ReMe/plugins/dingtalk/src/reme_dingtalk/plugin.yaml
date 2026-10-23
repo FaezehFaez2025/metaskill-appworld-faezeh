@@ -1,3 +1,0 @@
-backends:
-  dingtalk_markdown_send_step: reme_dingtalk.send:DingTalkMarkdownSendStep
-  dingtalk_wait_step: reme_dingtalk.wait:DingTalkWaitStep
