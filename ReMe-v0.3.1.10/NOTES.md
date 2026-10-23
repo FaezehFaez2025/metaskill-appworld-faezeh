@@ -14,7 +14,21 @@ Source: https://github.com/agentscope-ai/ReMe
 
 ---
 
-## 2.
+## 2. Initial experience pools
+
+The paper builds one initial pool per model from the 90 AppWorld training tasks. The released pools are in `docs/library/paper_data/task/`:
+
+| File | Experiences |
+|---|---|
+| `appworld_qwen3_8b.jsonl` | 207 |
+| `appworld_qwen3_14b.jsonl` | 218 |
+| `appworld_qwen3_32b.jsonl` | 184 |
+
+We use these released pools and do not build our own. `benchmark/appworld/run_appworld.py` loads the 8B one by default.
+
+---
+
+## 3.
 
 **Decision:**
 
