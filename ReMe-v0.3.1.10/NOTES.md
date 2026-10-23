@@ -1,5 +1,12 @@
 # Notes: ReMe v0.3.1.10 (AppWorld baseline)
 
+**Paper pipeline** (Cao et al., ACL 2026 Findings, "Remember Me, Refine Me: A Dynamic Procedural Memory Framework for Experience-Driven Agent Evolution"):
+1. **Acquire:** from training trajectories (successes and failures), an LLM distills short experiences ("when to use" + content), then validates and deduplicates them.
+2. **Reuse:** for a new task, retrieve the top-5 experiences by similarity of the task to "when to use", and add them to the prompt.
+3. **Refine:** after each task, add experiences from successful runs, and delete experiences that are retrieved often but rarely help.
+
+Reuse and Refine repeat for every new task (ReMe dynamic). Without Refine the pool stays fixed (ReMe fixed).
+
 ---
 
 ## 1. Version used
