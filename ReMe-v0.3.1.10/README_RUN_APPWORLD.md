@@ -71,24 +71,23 @@ Differences from the paper:
 
 ## 5. Configure the run
 
-Edit `main()` in `benchmark/appworld/run_appworld.py`:
+All settings are set on the command line in step 6:
 
-| Setting | ReMe fixed | ReMe dynamic | No memory |
-|---|---|---|---|
-| `use_memory` | `True` | `True` | `False` |
-| `use_memory_addition` | `False` | `True` | - |
-| `use_memory_deletion` | `False` | `True` | - |
+| Option | Meaning |
+|---|---|
+| `--mode` | `fixed` (default), `dynamic` or `none` (no memory) |
+| `--model_name` | agent model |
+| `--num_runs` | attempts per task (paper: 4) |
+| `--max_workers`, `--batch_size` | parallelism; lower them if the API rate-limits |
 
-Also set `model_name = "deepseek-v4-flash-0731"` and `num_runs` (paper: 4). Lower `max_workers` and `batch_size` if the API rate-limits.
-
-The initial pool is `docs/library/paper_data/task/appworld_qwen3_8b.jsonl`. For dynamic mode, move `load_memory(...)` inside the loop over runs so every run starts from the same pool.
+The initial pool is `docs/library/paper_data/task/appworld_qwen3_8b.jsonl`. A run is one pass over all tasks (`--num_runs 4` means 4 passes). In `dynamic` mode the pool changes as tasks finish, so it is reset to the initial pool before each run.
 
 ## 6. Run (terminal 2)
 
 ```bash
 cd ReMe-v0.3.1.10/benchmark/appworld
 conda activate appworld-reme
-python run_appworld.py
+python run_appworld.py --mode fixed --model_name deepseek-v4-flash-0731 --num_runs 4
 python run_exp_statistic.py
 ```
 
