@@ -21,7 +21,8 @@ pip install --no-cache-dir "fastmcp==2.14.1" "mcp==1.25.0"
 # AppWorld agent
 conda create -y -n appworld-reme python=3.12
 conda activate appworld-reme
-pip install appworld ray openai jinja2 loguru python-dotenv tqdm pandas requests
+pip install appworld openai jinja2 loguru python-dotenv tqdm pandas requests
+pip install "ray[default]==2.40.0" "rich<14"
 appworld install
 ```
 
@@ -92,7 +93,3 @@ python run_exp_statistic.py
 ```
 
 Results: `exp_result/<model>/*.jsonl`. A task is solved when `after_score == 1`.
-
-## Known issue: Ray
-
-`run_appworld.py` uses Ray. In our tests Ray 2.59 did not start in the AppWorld environment. Options: try an older Ray (untested), or replace Ray with a plain multiprocessing runner (worked in a 6-task test).
